@@ -1,4 +1,5 @@
 package tn.esprit.twin1.tpspring.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,7 @@ public class Chambre {
 
     @ManyToOne
     @JoinColumn(name = "idBloc")
+    @JsonIgnore
     Bloc bloc;
 
     @OneToMany

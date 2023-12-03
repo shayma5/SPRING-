@@ -2,6 +2,7 @@ package tn.esprit.twin1.tpspring.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import tn.esprit.twin1.tpspring.entities.Bloc;
 import tn.esprit.twin1.tpspring.entities.Chambre;
 import tn.esprit.twin1.tpspring.entities.Reservation;
 import tn.esprit.twin1.tpspring.entities.TypeChambre;
@@ -13,4 +14,6 @@ public interface ChambreRepositorie  extends JpaRepository<Chambre,Long> {
     List<Chambre> getChambresParBlocEtType(Long idBloc, TypeChambre typeC);
 
     Chambre findByReservationsContains(Reservation reservation);
+
+    List<Chambre> findChambreByBloc(Bloc bloc);
 }

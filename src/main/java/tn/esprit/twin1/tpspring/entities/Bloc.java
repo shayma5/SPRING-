@@ -2,6 +2,8 @@ package tn.esprit.twin1.tpspring.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 import java.util.Set;
 @Entity
 @Getter
@@ -29,8 +31,7 @@ public class Bloc {
     @JsonIgnore
     Foyer foyer;
 
-    @OneToMany(mappedBy = "bloc", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-    @JsonIgnore
-    Set<Chambre> chambres;
+    @OneToMany(mappedBy = "bloc", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Chambre> chambres;
 
 }

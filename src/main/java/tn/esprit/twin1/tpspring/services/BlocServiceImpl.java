@@ -1,8 +1,13 @@
 package tn.esprit.twin1.tpspring.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import tn.esprit.twin1.tpspring.Exception.ResourceNotFoundException;
+import tn.esprit.twin1.tpspring.dto.AddBlocRequest;
 import tn.esprit.twin1.tpspring.entities.Chambre;
 import tn.esprit.twin1.tpspring.repositories.BlocRepositorie;
 import tn.esprit.twin1.tpspring.repositories.ChambreRepositorie;
@@ -14,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BlocServiceImpl implements BlocService{
 
     private final BlocRepositorie blocRepositorie;
@@ -21,7 +27,9 @@ public class BlocServiceImpl implements BlocService{
     private final ChambreRepositorie chambreRepository;
 
     @Override
-    public Bloc addBloc(Bloc bloc) {
+    public Bloc addBloc(Bloc bloc  ) {
+        Foyer foyer= bloc.getFoyer();
+        bloc.setFoyer(foyer);
         return blocRepositorie.save(bloc);
     }
 
@@ -36,20 +44,20 @@ public class BlocServiceImpl implements BlocService{
     }
 
     @Override
-    public String deleteBlocById(Long id) {
-        if(blocRepositorie.findById(id).isPresent()){
-            blocRepositorie.deleteById(id);
-            return "Deleted"+blocRepositorie.findById(id).get().toString();
-        }else
-            return "etudiant with ID : "+id+" Doesn't exist";
+    public void deleteBlocById(long id) {
+        blocRepositorie.deleteById(id);
+
     }
 
     @Override
-    public Bloc updateBloc(long id, Bloc upbloc) {
+    public Bloc updateBloc(long id, AddBlocRequest upbloc) {
         Bloc bloc = blocRepositorie.findById(id).orElseThrow(()->new ResourceNotFoundException("Not found tutorial with id "));
+        Foyer foyer = foyerRepositorie.findByNomFoyer(upbloc.getNomFoyer())
+                .orElseThrow(() -> new EntityNotFoundException("Foyer not found"));
 
         bloc.setNomBloc(upbloc.getNomBloc());
         bloc.setCapaciteBloc(upbloc.getCapaciteBloc());
+        bloc.setFoyer(foyer);
 
 
         return  blocRepositorie.save(bloc);
@@ -74,4 +82,33 @@ public class BlocServiceImpl implements BlocService{
 
         return blocRepositorie.save(bloc);
     }
+
+    @Override
+    public ResponseEntity<String> addBlocToFoyer(AddBlocRequest request) {
+        Foyer foyer = foyerRepositorie.findByNomFoyer(request.getNomFoyer())
+                .orElseThrow(() -> new EntityNotFoundException("Foyer not found"));
+
+        Bloc bloc = new Bloc();
+        bloc.setNomBloc(request.getNomBloc());
+        bloc.setCapaciteBloc(request.getCapaciteBloc());
+        bloc.setFoyer(foyer);
+
+        foyer.getBlocs().add(bloc);
+
+        foyerRepositorie.save(foyer);
+
+        return ResponseEntity.ok("Bloc added to Foyer successfully");
+    }
+
+
+    @Override
+    @Scheduled(fixedRate = 60000)//lazem nzidou l'annotation @Enablecheduling fil main application
+    public void testSchedulure() {
+        List<Bloc> blocs = blocRepositorie.findAll();
+        log.info("hello !!!!");
+        for (Bloc bloc : blocs){
+            log.info(String.valueOf(chambreRepository.findChambreByBloc(bloc).size()));
+        }
+    }
+
 }
