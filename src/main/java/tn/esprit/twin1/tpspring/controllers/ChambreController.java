@@ -30,10 +30,10 @@ public class ChambreController {
 
     private final ChambreService chambreService;
 
-    @PostMapping("/new")
+    /*@PostMapping("/new")
     public Chambre addFoyer(@RequestBody Chambre chambre) {
         return chambreService.addChambre(chambre);
-    }
+    }*/
 
     @PostMapping("/new/bloc")
     public ResponseEntity<String> addChambreToBloc(@RequestBody AddChambreDto chambre) {
@@ -70,22 +70,22 @@ public class ChambreController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/types")
+    /*@GetMapping("/types")
     public List<String> getChambreTypes() {
         return Arrays.stream(TypeChambre.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
-    }
+    }*/
 
     @PutMapping("/update/{idChambre}")
     public Chambre updateChambre(@PathVariable long idChambre,@RequestBody AddChambreDto chambre) {
         return chambreService.updateChambre(idChambre,chambre);
     }
 
-    @GetMapping("/all")
+    /*@GetMapping("/all")
     public List<Chambre> getAllChambres() {
         return chambreService.getAllChambre();
-    }
+    }*/
 
     @GetMapping("/getId/{idChambre}")
     public Chambre getId(@PathVariable long idChambre) {
@@ -107,8 +107,8 @@ public class ChambreController {
         }
     }
 
-    @GetMapping("/getChambresParBlocEtType/{idBloc}/{typeC}")
+    /*@GetMapping("/getChambresParBlocEtType/{idBloc}/{typeC}")
     public List<Chambre> getChambresParBlocEtType(@PathVariable Long idBloc, @PathVariable TypeChambre typeChambre) {
         return chambreService.getChambresParBlocEtType(idBloc, typeChambre);
-    }
+    }*/
 }

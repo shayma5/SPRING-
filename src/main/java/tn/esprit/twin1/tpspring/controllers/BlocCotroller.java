@@ -29,21 +29,21 @@ public class BlocCotroller {
     private final BlocRepositorie blocRepositorie;
     private final BlocService blocService;
 
-    @PostMapping("/new")
+    /*@PostMapping("/new")
     public Bloc addBloc(@RequestBody Bloc bloc) {
         return blocService.addBloc(bloc);
-    }
+    }*/
 
     @PutMapping("/update/{idBloc}")
     public Bloc updateFoyer(@PathVariable long idBloc,@RequestBody AddBlocRequest bloc) {
         return blocService.updateBloc(idBloc,bloc);
     }
 
-    @GetMapping("/getAll")
+    /*@GetMapping("/getAll")
     public ResponseEntity<List<Bloc>> getAllEtudiant() {
         List<Bloc> etudiants = blocService.getAllBloc();
         return new ResponseEntity<>(etudiants, HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/blocs")
     public List<BlocDto> getAllBlocs() {
@@ -83,15 +83,15 @@ public class BlocCotroller {
         }
     }
 
-    @PostMapping("/affecterBlocFoyer/{idFoyer}")
+    /*@PostMapping("/affecterBlocFoyer/{idFoyer}")
     public Bloc addBlocAndAsigneToFoyer(@PathVariable long idFoyer,@RequestBody Bloc bloc) {
         return blocService.addBlocAndAsigneToFoyer(idFoyer, bloc);
-    }
+    }*/
 
-    @PutMapping("/affecterChambres/{idBloc}")
+    /*@PutMapping("/affecterChambres/{idBloc}")
     public Bloc affecterChambresABloc(@RequestBody List<Long> idChambre, @PathVariable Long idBloc) {
         return blocService.affecterChambresABloc(idChambre, idBloc);
-    }
+    }*/
 
 
     @PostMapping("/foyers/addBloc")
@@ -111,8 +111,8 @@ public class BlocCotroller {
     }
 
 
-    @GetMapping("{date}")
+    /*@GetMapping("{date}")
     public void dateTest(@PathVariable LocalDate date){
         log.info(String.valueOf(date));
-    }
+    }*/
 }
